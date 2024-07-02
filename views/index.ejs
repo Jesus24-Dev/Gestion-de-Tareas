@@ -1,0 +1,170 @@
+<%-include('partials/headerIndex')%>
+<main class="container-fluid">
+
+  <% if (page == 'login') { %>
+    <form action="/" method="POST">
+      <article>
+        <header>
+          <h3>Iniciar sesion</h3>
+        </header>
+        <fieldset>
+          <label for="nickname">
+            Nickname
+            <% if(error == 'campos vacios'){ %> 
+              <input type="text" name="nickname" id="nickname" aria-label="nickname" aria-invalid="true" placeholder="Campos obligatorio.">
+            <%} else if (error == 'usuario inexistente') {%>
+              <input type="text" name="nickname" id="nickname" aria-label="nickname" aria-invalid="true" placeholder="Usuario no existe.">
+            <%} else {%>
+              <input type="text" name="nickname" id="nickname" aria-label="nickname">
+            <%}%>
+          </label>
+          <label for="clave">
+            Clave
+            <% if(error == 'campos vacios'){ %>
+              <input type="password" name="clave" id="clave" aria-label="clave" aria-invalid="true" placeholder="Campos obligatorios.">
+            <%} else if (error == 'clave no coincide') {%>
+              <input type="password" name="clave" id="clave" aria-label="clave" aria-invalid="true" placeholder="La clave no coincide.">
+            <%} else {%>
+              <input type="password" name="clave" id="clave" aria-label="clave">
+            <%}%>
+            <small>Olvidaste tu clave? <a href="/usuario/recuperar_clave">recupera aqui</a></small>
+          </label>
+        </fieldset>
+          <footer>
+            <button type="submit">Iniciar sesion</button>
+            <small>No tienes cuenta? <a href="/usuario">Crear cuenta</a></small>
+          </footer>
+      </article>
+    </form>
+    <% } %>
+
+    <% if (page == 'registro'){ %> 
+      <form action="/usuario" class="form" method="POST">
+        <article>
+          <header>
+            <h3>Registro de usuario</h3>
+          </header>
+          <fieldset>
+            <label for="nickname">
+              Nickname
+              <% if(error == 'campos vacios'){ %>
+                <input type="text" name="nickname" id="nickname" aria-label="nickname" placeholder="Campos obligatorios" aria-invalid="true">
+              <%} else if (error == 'usuario existente'){%>
+                <input type="text" name="nickname" id="nickname" aria-label="nickname" placeholder="El nombre de usuario ya existe" aria-invalid="true">
+              <%} else {%>
+                <input type="text" name="nickname" id="nickname" aria-label="nickname">
+              <%}%>
+            </label>
+            <label for="clave">
+              Clave
+              <% if(error == 'campos vacios'){ %>
+                <input type="password" name="clave" id="clave" aria-label="clave" placeholder="Campos obligatorios" aria-invalid="true">
+              <%} else {%>
+                <input type="password" name="clave" id="clave" aria-label="clave">
+                <small>La clave debe contener al menos 8 caracteres y un simbolo especial.</small>
+              <%}%>
+            </label>
+          </article>
+          <article>
+          <label for="pregunta_seguridad">Pregunta de seguridad</label>
+          <select name="pregunta_seguridad" id="pregunta_seguridad" aria-label="Pregunta de seguridad">
+            <option>¿Cuál es el nombre de tu primera mascota?</option>
+            <option>¿Cuál es el nombre de la calle donde creciste?</option>
+            <option>¿Cuál es el nombre de tu escuela primaria?</option>
+            <option>¿Cuál es tu libro favorito?</option>
+            <option>¿Cuál es el nombre de tu mejor amigo de la infancia?</option>
+          </select>
+          <label for="respuesta_seguridad">
+            Respuesta
+            <% if(error == 'campos vacios'){ %>
+              <input type="text" name="respuesta_seguridad" id="respuesta_seguridad" aria-label="Respuesta de seguridad" placeholder="Campos obligatorios" aria-invalid="true">
+            <%} else {%>
+              <input type="text" name="respuesta_seguridad" id="respuesta_seguridad" aria-label="Respuesta de seguridad" >
+            <%}%>
+          </label>
+        </fieldset>
+        <footer>
+          <button type="submit">Crear cuenta</button>
+          <small><a href="/">Ya tengo una cuenta</a></small>
+        </footer>
+        </article>
+      </form>  
+    <% } %>
+
+    <% if(page == 'recuperarClave') { %>
+      <form action="/usuario/recuperar_clave" method="POST">
+        <article>
+          <header>
+            <h3>Recuperar clave</h3>
+          </header>
+          <fieldset>
+            <label for="nickname">Ingrese su nombre de usuario</label>
+            <% if (error == 'usuario inexistente'){%>
+              <input type="text" name="nickname" id="nickname" aria-label="nickname" aria-invalid="true" placeholder="Usuario no encontrado">
+            <%} else { %> 
+              <input type="text" name="nickname" id="nickname" aria-label="nickname">
+            <%}%>
+          </fieldset>
+          <footer>
+            <button type="submit">Buscar</button>
+          </footer>
+        </article>
+      </form>
+    <% } %>
+
+    <% if(page == 'comprobarSesion') { %>
+      <form action="/usuario/recuperar_clave/<%= id %>" method="POST">
+        <article>
+          <header>
+            <h3>Comprobando que eres tu...</h3>
+          </header>
+        <fieldset>
+          <label for="pregunta_seguridad">
+            Pregunta de seguridad
+            <input type="text" name="pregunta_seguridad" id="pregunta_seguridad" aria-label="Pregunta de seguridad" disabled value="<%= pregunta %>">
+          </label>
+          <label for="respuesta_seguridad">
+            Respuesta
+            <% if (error == 'respuesta no coincide') { %> 
+              <input type="text" name="respuesta_seguridad" id="respuesta_seguridad" aria-label="Respuesta de seguridad" aria-invalid="true">
+              <small>La respuesta no coincide.</small>
+            <% } else if (error == 'campos vacios'){%> 
+              <input type="text" name="respuesta_seguridad" id="respuesta_seguridad" aria-label="Respuesta de seguridad" aria-invalid="true" placeholder="Los campos son obligatorios">
+            <% } else {%> 
+              <input type="text" name="respuesta_seguridad" id="respuesta_seguridad" aria-label="Respuesta de seguridad">
+            <%}%>
+          </label>
+        </fieldset>
+        <footer>
+          <button type="submit">Enviar respuesta</button>
+        </footer>
+      </article>
+      </form>
+    <% } %>
+
+    <% if(page == 'nuevaClave') { %>
+    <form action="/usuario/actualizar_clave/<%= id %>" method="POST">
+      <article>
+        <header>
+          <h3>Nueva clave</h3>
+        </header>
+        <fieldset>
+          <label for="clave">
+            Ingrese su nueva clave
+            <% if (error == 'campos vacios'){ %> 
+              <input type="password" name="clave" id="clave" aria-label="clave" aria-invalid="true" placeholder="Los campos son obligatorios!">
+            <%} else {%>
+              <input type="password" name="clave" id="clave" aria-label="clave">
+            <%}%>
+          </label>
+          <small>Debe contener al menos 8 caracteres y un caracter especial.</small>
+        </fieldset>
+        <footer>
+          <button type="submit">Guardar</button>
+        </footer>
+      </article>
+    </form>
+    <% } %>
+
+  </main>
+<%-include('partials/footer')%>

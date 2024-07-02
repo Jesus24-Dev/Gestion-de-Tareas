@@ -1,0 +1,146 @@
+<%-include('partials/header')%>
+<main class="container-fluid">
+    <% if (page == 'proyectos') { %> 
+        <article class="proyectos overflow-auto">
+        <header>
+            <h1>Lista de proyectos</h1>
+        </header>
+        <table class="striped">
+            <thead>
+                <th>#</th>
+                <th>Nombre del proyecto</th>
+                <th>Descripcion</th>
+                <th>Ver</th>
+                <th>Eliminar</th>
+            </thead>
+            <tbody>
+                <% count = 0%>
+                <% proyectos.forEach(proyecto => { %>
+                <tr>
+                    <td><%= ++count %></td>
+                    <td><%= proyecto.nombre%></td>
+                    <td><%= proyecto.descripcion%></td>
+                    <td><a href="/tarea/<%= id_usuario %>/<%= proyecto.id %>/<%= proyecto.nombre %>" class="botonVer">Ver</a></td>
+                    <td><a href="/proyecto/eliminar_proyecto/<%=id_usuario%>/<%=proyecto.id%>" class="botonEliminar eliminarProyecto">Eliminar</a></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <footer class="proyectoFooter">
+            <p>No hay mas proyectos ):</p>
+            <a href="/proyecto/crear_proyecto/<%= id_usuario %>" class="botonVer">Crear nuevo proyecto</a>
+        </footer>
+        </article>
+    <% } %> 
+    <% if (page == 'crearProyecto') { %> 
+        <form action="/proyecto/crear_proyecto/<%= id_usuario %>" method="POST">
+            <article>
+                <header>
+                    <h3>Crear un nuevo proyecto</h3>
+                </header>
+                <fieldset>
+                    <label for="nombre">
+                        Nombre del proyecto
+                        <% if (error == 'campos vacios'){ %>  
+                            <input type="text" name="nombre" id="nombre" aria-label="nombre" aria-invalid="true">
+                            <small>Los campos son obligatorios</small>
+                        <%} else {%>
+                            <input type="text" name="nombre" id="nombre" aria-label="nombre">
+                        <% } %>
+                    </label>
+                    <label for="descripcion">
+                        Descripcion del proyecto
+                        <% if (error == 'campos vacios'){ %> 
+                            <input type="text" name="descripcion" id="descripcion" aria-label="descripcion" aria-invalid="true">
+                            <small>Los campos son obligatorios</small>
+                        <%} else {%>
+                            <input type="text" name="descripcion" id="descripcion" aria-label="descripcion">
+                        <% } %>
+                    </label>
+                </fieldset>
+                <footer>
+                    <button type="submit">Crear proyecto</button>
+                </footer>
+            </article>
+        </form>
+    <% } %> 
+
+    <% if (page == 'tareas') { %> 
+        <article class="proyectos overflow-auto">
+            <header>
+                <h1>Proyecto <%=nombre_proyecto%></h1>
+                <h3>Lista de tareas</h3>
+            </header>
+            <table class="striped">
+                <thead>
+                    <th>#</th>
+                    <th>Nombre de la tarea</th>
+                    <th>Estado</th>
+                    <th>Prioridad</th>
+                    <th>Eliminar</th>
+                </thead>
+                <tbody>
+                    <% count = 0%>
+                    <% tareas.forEach(tarea => { %>
+                    <tr>
+                        <td><%= ++count %></td>
+                        <td><%= tarea.nombre%></td>
+                        <% if (!tarea.estado) { %> 
+                            <td><a href="/tarea/completar/<%=id_usuario%>/<%= id_proyecto%>/<%=nombre_proyecto%>/<%= tarea.id%>" class="botonVer">En proceso</a></td>
+                        <%} else { %>
+                            <td><button disabled class="secondary" aria-label=<%=tarea.id%>>Terminada</button></td>
+                        <% } %>
+                        <% if (tarea.prioridad == 1){ %> 
+                            <td>Alta</td>
+                        <%} else if (tarea.prioridad == 2) { %>
+                            <td>Medio</td>
+                        <%} else { %>
+                            <td>Bajo</td>
+                        <% } %>
+                        <td><a href="/tarea/eliminar/<%=id_usuario%>/<%= id_proyecto%>/<%=nombre_proyecto%>/<%= tarea.id%>" class="botonEliminar">Eliminar</a></td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            <footer class="proyectoFooter">
+                <p>No hay mas tareas ):</p>
+                <div class="botones">
+                    <a href="/proyecto/ver_proyecto/<%= id_usuario %>" class="botonVer">Volver a proyectos</a>
+                    <a href="/tarea/crear_tarea/<%=id_usuario%>/<%=id_proyecto%>/<%=nombre_proyecto%>" class="botonVer">Crear nueva tarea</a>
+                </div>
+            </footer>
+        </article>
+    <% } %>
+
+    <% if (page == 'crearTarea') { %>
+        <form action="/tarea/crear_tarea/<%=id_usuario%>/<%=id_proyecto%>/<%=nombre_proyecto%>" method="POST">
+            <article>
+                <header>
+                    <h3>Crear nuevo proyecto</h3>
+                </header>
+                <fieldset>
+                    <label for="nombre">
+                        Nombre de la tarea
+                        <% if (error == 'campos vacios'){ %>
+                            <input type="text" id="nombre" name="nombre" aria-invalid="true" placeholder="Campos obligatorios">
+                        <%} else {%>
+                            <input type="text" id="nombre" name="nombre">
+                        <% } %>
+                    </label>
+                    <label for="prioridad">
+                        Prioridad
+                        <select name="prioridad" id="prioridad">
+                            <option value="1">Alta</option>
+                            <option value="2">Medio</option>
+                            <option value="3">Bajo</option>
+                        </select>
+                    </label>
+                </fieldset>
+                <footer>
+                    <button type="submit">Crear tarea</button>
+                </footer>
+            </article>
+        </form>
+    <% } %> 
+</main>
+<%-include('partials/footer')%>

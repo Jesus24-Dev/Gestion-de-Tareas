@@ -1,0 +1,44 @@
+{
+  "name": "gestion_tareas",
+  "version": "1.0.0",
+  "description": "Aplicacion que permite a los usuarios tener un control y gestion de tareas asignadas.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "testDB": "node database/database.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jesus24-Dev/Gestion-de-Tareas.git"
+  },
+  "keywords": [
+    "javascript",
+    "node",
+    "tareas",
+    "gestion",
+    "api"
+  ],
+  "author": "Jesus24-Dev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jesus24-Dev/Gestion-de-Tareas/issues"
+  },
+  "homepage": "https://github.com/Jesus24-Dev/Gestion-de-Tareas#readme",
+  "dependencies": {
+    "@picocss/pico": "^2.0.6",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "path": "^0.12.7",
+    "pg": "^8.12.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
